@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
+use App\Models\Session;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        Customer::factory(10)->create()->each(function ($customer) {
+            $users = User::factory(10)->create()->each(function ($user) {
+                $sessions = Session::factory(10)->make();
+                $user->sessions()->saveMany($sessions);
+            });
+
+            $customer->users()->saveMany($users);
+        });
     }
 }
