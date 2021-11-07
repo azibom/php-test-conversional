@@ -12,3 +12,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN apt-get update -y && apt-get install -y sendmail libpng-dev
 RUN docker-php-ext-install gd
+
+RUN pecl install -o -f redis \
+&&  rm -rf /tmp/pear \
+&&  docker-php-ext-enable redis
